@@ -1,0 +1,12 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --main-red: rgb(217, 85, 80);
+  --task-transparency: rgba(255, 255, 255, 0.1);
+  --short-break: rgb(76, 145, 149);
+  --long-break: rgb(69, 124, 163);
+}

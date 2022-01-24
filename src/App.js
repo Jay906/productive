@@ -1,5 +1,5 @@
 import { useState } from "react";
-import uuid from "react-uuid";
+import { useEffect } from "react/cjs/react.development";
 import "./App.css";
 import Estimate from "./components/Estimate";
 import Info from "./components/Info";
@@ -7,36 +7,14 @@ import Nav from "./components/Nav";
 import Settings from "./components/Settings";
 import Tasks from "./components/Tasks";
 import Tracker from "./components/Tracker";
+import { getTasks, getSettings } from "./services/services";
 
 function App() {
   const [show, setShow] = useState(false);
 
-  const [settings, setSettings] = useState({
-    pomodoro: 25,
-    shortBreak: 5,
-    longBreak: 15,
-    longBreakAfter: 4,
-    autoBreak: true,
-    autoPomodoro: true,
-    nightMode: false,
-  });
+  const [settings, setSettings] = useState();
 
-  const [tasks, setTasks] = useState([
-    {
-      id: uuid(),
-      title: "salam",
-      completed: false,
-      date: new Date(),
-      plannedSessions: 1,
-    },
-    {
-      id: uuid(),
-      title: "balam",
-      completed: false,
-      date: new Date(),
-      plannedSessions: 1,
-    },
-  ]);
+  const [tasks, setTasks] = useState();
 
   const calculateEstimate = () => {
     const plannedSessions = tasks.reduce(
@@ -64,6 +42,14 @@ function App() {
 
   const showSettings = () => setShow(true);
   const hideSettings = () => setShow(false);
+
+  useEffect(() => {
+    setSettings(getSettings());
+    setTasks(getTasks());
+  }, []);
+  if (!settings && !tasks) {
+    return <div>Loading</div>;
+  }
   return (
     <>
       <Settings
@@ -83,10 +69,12 @@ function App() {
               onSettingsChanged={onSettingsChanged}
             />
             <Tasks tasks={tasks} handleTask={handleTask} />
-            <Estimate
-              calculateEstimate={calculateEstimate}
-              total={tasks.length}
-            />
+            {tasks.length > 0 && (
+              <Estimate
+                calculateEstimate={calculateEstimate}
+                total={tasks.length}
+              />
+            )}
           </main>
         </div>
       </div>

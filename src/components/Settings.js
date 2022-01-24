@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { updateSettings } from "../services/services";
 
 function Settings({ settingsProps }) {
   const { settings, hideSettings, show, onSettingsChanged } = settingsProps;
@@ -16,6 +17,7 @@ function Settings({ settingsProps }) {
   const saveAndLeave = () => {
     const tmp = { ...state };
     onSettingsChanged(tmp);
+    updateSettings(tmp);
     hideSettings();
   };
 

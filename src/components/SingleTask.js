@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaCheckCircle, FaEdit, FaTrash, FaTrashAlt } from "react-icons/fa";
+import { FaCheckCircle, FaEdit, FaTrash } from "react-icons/fa";
 import TaskForm from "./TaskForm";
+import { updateTasks } from "../services/services";
 
 const SingleTaskContainer = styled.div`
   margin: 0.3rem 0;
@@ -72,6 +73,7 @@ function SingleTask({ tasks, task, handleTask }) {
     tmpArr[index] = tmp;
     setEditing(false);
     handleTask(tmpArr);
+    updateTasks(tmpArr);
   };
 
   const deleteTask = (id) => {
@@ -83,6 +85,7 @@ function SingleTask({ tasks, task, handleTask }) {
     }
     const tmp = tasks;
     tmp.splice(index, 1);
+    updateTasks(tmp);
     return handleTask(tmp);
   };
 

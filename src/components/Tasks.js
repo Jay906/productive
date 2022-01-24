@@ -3,6 +3,7 @@ import uuid from "react-uuid";
 import ProgressBar from "./ProgressBar";
 import SingleTask from "./SingleTask";
 import TaskForm from "./TaskForm";
+import { updateTasks } from "../services/services";
 
 function Tasks({ tasks, handleTask }) {
   const [show, setShow] = useState(false);
@@ -22,6 +23,7 @@ function Tasks({ tasks, handleTask }) {
     };
     handleShow(false);
     handleTask([...tasks, newTask]);
+    updateTasks([...tasks, newTask]);
   };
 
   return (

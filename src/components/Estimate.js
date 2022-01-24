@@ -21,7 +21,7 @@ const Div = styled.div`
 `;
 
 function Estimate({ total, calculateEstimate }) {
-  const [est, setEst] = useState("19:28");
+  const [est, setEst] = useState();
 
   useEffect(() => {
     const date = new Date();

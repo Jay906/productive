@@ -6,8 +6,10 @@ import Info from "./components/Info";
 import Nav from "./components/Nav";
 import Settings from "./components/Settings";
 import Tasks from "./components/Tasks";
+import Theme from "./components/Theme";
 import Tracker from "./components/Tracker";
 import { getTasks, getSettings } from "./services/services";
+import GlobalStyles from "./Styles";
 
 function App() {
   const [show, setShow] = useState(false);
@@ -52,33 +54,36 @@ function App() {
   }
   return (
     <>
-      <Settings
-        settingsProps={{
-          show,
-          hideSettings,
-          settings,
-          onSettingsChanged,
-        }}
-      />
-      <div className="main-container work">
-        <div className="container">
-          <Nav showSettings={showSettings} />
-          <main>
-            <Tracker
-              settings={settings}
-              onSettingsChanged={onSettingsChanged}
-            />
-            <Tasks tasks={tasks} handleTask={handleTask} />
-            {tasks.length > 0 && (
-              <Estimate
-                calculateEstimate={calculateEstimate}
-                total={tasks.length}
+      <Theme darkMode={settings.darkMode}>
+        <GlobalStyles />
+        <Settings
+          settingsProps={{
+            show,
+            hideSettings,
+            settings,
+            onSettingsChanged,
+          }}
+        />
+        <main className="main-container">
+          <div className="container">
+            <Nav showSettings={showSettings} />
+            <div className="tracker-container">
+              <Tracker
+                settings={settings}
+                onSettingsChanged={onSettingsChanged}
               />
-            )}
-          </main>
-        </div>
-      </div>
-      <Info />
+              <Tasks tasks={tasks} handleTask={handleTask} />
+              {tasks.length > 0 && (
+                <Estimate
+                  calculateEstimate={calculateEstimate}
+                  total={tasks.length}
+                />
+              )}
+            </div>
+          </div>
+        </main>
+        <Info />
+      </Theme>
     </>
   );
 }

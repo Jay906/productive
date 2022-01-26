@@ -1,3 +1,13 @@
+const initSettings = {
+  pomodoro: 25,
+  shortBreak: 5,
+  longBreak: 15,
+  longBreakAfter: 4,
+  autoBreak: true,
+  autoPomodoro: true,
+  darkMode: false,
+};
+
 function getTasks() {
   const posts = localStorage.getItem("pomodoro-tasks");
   if (!posts) {
@@ -13,16 +23,8 @@ function updateTasks(tasks) {
 function getSettings() {
   const settings = JSON.parse(localStorage.getItem("pomodoro-settings"));
   if (!settings) {
-    updateSettings({
-      pomodoro: 25,
-      shortBreak: 5,
-      longBreak: 15,
-      longBreakAfter: 4,
-      autoBreak: true,
-      autoPomodoro: true,
-      nightMode: false,
-    });
-    return getSettings();
+    updateSettings(initSettings);
+    return initSettings;
   }
   return settings;
 }

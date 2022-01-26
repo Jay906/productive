@@ -7,11 +7,12 @@ function Settings({ settingsProps }) {
   const [state, setState] = useState({ ...settings });
 
   const handleChange = (e) => {
-    setState({ ...state, [e.target.name]: Number(e.target.value) });
+    setState((prev) => ({ ...prev, [e.target.name]: Number(e.target.value) }));
   };
 
   const handleCheckboxes = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value.checked });
+    setState((prev) => ({ ...prev, [e.target.name]: e.target.checked }));
+    console.log(state);
   };
 
   const saveAndLeave = () => {
@@ -31,7 +32,7 @@ function Settings({ settingsProps }) {
       }
     >
       <div className="settings">
-        <div className="setting-component">
+        <div className="setting-header">
           <h1 className="off-white">Timer</h1>
           <div className="X btn" onClick={hideSettings}>
             X
@@ -47,7 +48,6 @@ function Settings({ settingsProps }) {
             </label>
             <input
               type="number"
-              className="bg-off-white"
               id="pomodoro"
               name="pomodoro"
               value={state.pomodoro.toString().replace(/^0+/, "")}
@@ -61,7 +61,6 @@ function Settings({ settingsProps }) {
             </label>
             <input
               type="number"
-              className="bg-off-white"
               id="break"
               name="shortBreak"
               value={state.shortBreak.toString().replace(/^0+/, "")}
@@ -75,7 +74,6 @@ function Settings({ settingsProps }) {
             </label>
             <input
               type="number"
-              className="bg-off-white"
               id="long-break"
               name="longBreak"
               value={state.longBreak.toString().replace(/^0+/, "")}
@@ -122,7 +120,6 @@ function Settings({ settingsProps }) {
               type="number"
               id="longBreakAfter"
               value={state.longBreakAfter.toString().replace(/^0+/, "")}
-              className="bg-off-white"
               name="longBreakAfter"
               min="1"
               onChange={handleChange}
@@ -135,10 +132,10 @@ function Settings({ settingsProps }) {
           <label className="switch">
             <input
               type="checkbox"
-              checked={state.nightMode}
-              value={state.nightMode}
+              checked={state.darkMode}
+              value={state.darkMode}
               onChange={handleCheckboxes}
-              name="nightMode"
+              name="darkMode"
             />
             <span className="slider round"></span>
           </label>

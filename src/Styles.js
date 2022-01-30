@@ -393,6 +393,34 @@ export default createGlobalStyle`
     left: 0;
   }
   
+  .options-container {
+    position: relative;
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .options-list {
+    background: linear-gradient(${(props) => props.theme.mainTransparency}, ${(
+  props
+) => props.theme.mainTransparency}), ${(props) => props.theme.mainColor};
+    position: absolute;
+    top: 120%;
+    z-index: 1;
+    transform-origin: top right;
+    transform: scale(0, 0);
+    transition: ${(props) => props.theme.mainTransition};
+  }
+
+  .show-options-list {
+    transform: scale(1, 1);
+  }
+
+  .options-list li {
+    padding: 1rem;
+    border-bottom: 1px solid ${(props) => props.theme.mainFg};
+  }
+
   .info {
     width: 95%;
     margin: 1rem auto;

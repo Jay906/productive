@@ -7,6 +7,7 @@ import { updateTasks } from "../services/services";
 
 function Tasks({ tasks, handleTask }) {
   const [show, setShow] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const handleShow = (value) => setShow(value);
 
   const addTask = (input, counter) => {
@@ -26,13 +27,49 @@ function Tasks({ tasks, handleTask }) {
     updateTasks([...tasks, newTask]);
   };
 
+  const removeAll = () => {
+    if (window.confirm("Are you sure you want to delete all tasks?")) {
+      updateTasks([]);
+      handleTask([]);
+    }
+  };
+
+  const removeCompletedTasks = () => {
+    if (window.confirm("Are you sure you want to delete completed tasks?")) {
+      const tmp = tasks.filter((task) => task.completed);
+      updateTasks(tmp);
+      handleTask(tmp);
+    }
+  };
+
   return (
     <div>
       <div className="tasks-header">
         <h3>Tasks</h3>
-        <button className="options btn">
-          <span className="dot"></span>
-        </button>
+        <div className="options-container">
+          <button
+            className="options btn"
+            onClick={() => setShowOptions(!showOptions)}
+          >
+            <span className="dot"></span>
+          </button>
+          <ul
+            className={
+              showOptions ? "options-list show-options-list" : "options-list"
+            }
+          >
+            <li>
+              <button className="btn" onClick={removeAll}>
+                Remove all tasks
+              </button>
+            </li>
+            <li>
+              <button className="btn" onClick={removeCompletedTasks}>
+                Remove Completed tasks
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className="tasks-list"></div>
       <ProgressBar color="#ccc" />

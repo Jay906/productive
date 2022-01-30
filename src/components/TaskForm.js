@@ -5,6 +5,25 @@ function TaskForm({ handleForm, handleCancel, title, plannedSessions }) {
   const [counter, setCounter] = useState(plannedSessions);
   let inputRef = createRef(null);
 
+  const handleCounterButtons = (e) => {
+    if (counter <= 0 && e.target.name === "subtraction") {
+      return;
+    } else if (counter >= 20 && e.target.name === "addition") {
+      return;
+    }
+    if (e.target.name === "addition") {
+      setCounter((prev) => prev + 1);
+    } else {
+      setCounter((prev) => prev - 1);
+    }
+  };
+
+  const handleCounter = (e) => {
+    let { value, min, max } = e.target;
+    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+    setCounter(value);
+  };
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -27,20 +46,22 @@ function TaskForm({ handleForm, handleCancel, title, plannedSessions }) {
           type="number"
           className="task-number"
           value={counter.toString().replace(/^0+/, "")}
-          onChange={(e) => setCounter(e.target.value)}
+          onChange={handleCounter}
           min="0"
           max="20"
           id="task-number"
         />
         <button
           className="number-counter btn"
-          onClick={() => setCounter((prev) => prev + 1)}
+          name="addition"
+          onClick={handleCounterButtons}
         >
           &#x21E7;
         </button>
         <button
           className="number-counter btn"
-          onClick={() => setCounter((prev) => prev - 1)}
+          name="subtraction"
+          onClick={handleCounterButtons}
         >
           &#x21E9;
         </button>

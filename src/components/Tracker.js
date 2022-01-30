@@ -7,6 +7,31 @@ function Tracker({ settings }) {
     ticking: false,
   });
 
+  const changeMode = (md) => {
+    if (md === state.mode) {
+      return;
+    }
+    if (
+      !window.confirm(
+        "Your current session will be skipped. Are you sure you want to skip it?"
+      )
+    ) {
+      return;
+    }
+    const tmp = { ...state };
+    if (!settings.autoBreak) {
+      tmp.ticking = false;
+    }
+    if (state.mode === "pomodoro") {
+      tmp.pomodoroCount =
+        state.pomodoroCount === settings.longBreakAfter
+          ? 1
+          : state.pomodoroCount + 1;
+    }
+    tmp.mode = md;
+    setState(tmp);
+  };
+
   let { mode } = state;
 
   const [displayTime, setDisplayTime] = useState({
@@ -18,20 +43,28 @@ function Tracker({ settings }) {
     const { mins, secs } = displayTime;
     const startTimer = () => {
       if (mins === 0 && secs === 0) {
+        let tmp = { ...state };
         if (state.mode === "pomodoro") {
-          let tmpMode;
           if (state.pomodoroCount === settings.longBreakAfter) {
-            tmpMode = "longBreak";
+            tmp.mode = "longBreak";
           } else {
-            tmpMode = "shortBreak";
+            tmp.mode = "shortBreak";
           }
-          const pomodoroCount =
+          if (!settings.autoBreak) {
+            tmp.ticking = false;
+          }
+          tmp.pomodoroCount =
             state.pomodoroCount === settings.longBreakAfter
               ? 1
               : state.pomodoroCount + 1;
-          setState((prev) => ({ ...prev, mode: tmpMode, pomodoroCount }));
+
+          setState(tmp);
         } else {
-          setState((prev) => ({ ...prev, mode: "pomodoro" }));
+          if (!settings.autoPomodoro) {
+            tmp.ticking = false;
+          }
+          tmp.mode = "pomodoro";
+          setState(tmp);
         }
       } else if (secs === 0) {
         setDisplayTime({ mins: mins - 1, secs: 59 });
@@ -56,16 +89,19 @@ function Tracker({ settings }) {
       <div className="modes">
         <button
           className={mode === "pomodoro" ? "btn mode active" : "btn mode"}
+          onClick={() => changeMode("pomodoro")}
         >
           Focus
         </button>
         <button
           className={mode === "shortBreak" ? "btn mode active" : "btn mode"}
+          onClick={() => changeMode("shortBreak")}
         >
           Break
         </button>
         <button
           className={mode === "longBreak" ? "btn mode active" : "btn mode"}
+          onClick={() => changeMode("longBreak")}
         >
           Long Break
         </button>
